@@ -207,5 +207,3 @@ CAMERA_PROFILES = {
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Ashvinj2004)
 
 ---
-
-*Built as an exercise in understanding rather than assembling — every component was implemented and evaluated incrementally, and the fusion policy reflects measured behaviour rather than assumed behaviour.*
