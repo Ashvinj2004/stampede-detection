@@ -2,8 +2,6 @@
 
 **Real-time crowd monitoring with density forecasting and threshold-based alerting, built on YOLOv8 detection and CSRNet density estimation with an empirically-derived fusion policy.**
 
-*Independent project · VIT-AP University · 2025*
-
 ---
 
 ## What this does
@@ -205,7 +203,6 @@ CAMERA_PROFILES = {
 ## Author
 
 **Ashvin Jaison Olickal**
-B.Tech Computer Science · VIT-AP University
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Ashvinj2004)
 
