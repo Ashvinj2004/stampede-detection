@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+env/
+.venv/
+
+# Model weights — too large for git, documented in README instead
+*.pth
+*.pt
+
+# Video files — large, and not ours to redistribute
+*.mp4
+*.avi
+*.mov
+
+# Generated output
+sample_*.jpg
+disagree_*.jpg
+crowd_alerts.log
+runs/
+
+# OS / IDE
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
