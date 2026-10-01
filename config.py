@@ -53,3 +53,10 @@ CSRNET_TRIGGER_ON  = 50      # YOLO count above which CSRNet is invoked
 CSRNET_TRIGGER_OFF = 40      # deactivate only below this (hysteresis)
 CSRNET_INTERVAL    = 20       # run CSRNet every Nth frame when triggered (CPU cost)
 YOLO_IMGSZ         = 1280    # higher res: quadrupled detections vs default 640
+
+# ── Tracker settings ──
+TRACKER_USE_APPEARANCE   = True   # flip to False to A/B test against geometry alone
+TRACKER_MAX_AGE          = 15     # frames a track survives unmatched (~1.2s at 25fps)
+TRACKER_N_INIT           = 3      # matches needed before a track is shown
+TRACKER_APPEARANCE_WEIGHT = 0.5   # 0 = geometry only, 1 = appearance only
+TRACKER_MAX_APP_DISTANCE  = 0.4   # above this, appearance rules a pairing out

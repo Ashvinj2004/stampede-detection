@@ -10,6 +10,9 @@ import config
 import threading
 import cv2
 
+from tracker import Tracker
+from appearance import extract_feature
+
 from alerts import fire_alert
 from csrnet_estimator import CSRNetEstimator
 
@@ -34,6 +37,14 @@ class FrameAnalyzer:
         self.model = model
         self.fps = fps
         self.usable_area = config.usable_area(profile)
+
+        self.tracker = Tracker(
+            max_age=config.TRACKER_MAX_AGE,
+            n_init=config.TRACKER_N_INIT,
+            appearance_weight=config.TRACKER_APPEARANCE_WEIGHT,
+            max_appearance_distance=config.TRACKER_MAX_APP_DISTANCE,
+            use_appearance=config.TRACKER_USE_APPEARANCE,
+        )
 
         # Each camera's own private memory
         self.density_history = deque(maxlen=config.HISTORY_LENGTH)
@@ -72,17 +83,16 @@ class FrameAnalyzer:
         Run the full pipeline on one frame.
         Returns a dict of everything the display/alert layers need.
         """
-        results = self.model.track(
+        results = self.model.predict(
             frame, classes=[0], conf=config.CONF_THRESHOLD,
-            imgsz=config.YOLO_IMGSZ,persist=True, verbose=False
+            imgsz=config.YOLO_IMGSZ, verbose=False
         )
         boxes = results[0].boxes.xyxy.cpu().numpy()
         person_count = len(boxes)
 
-        if results[0].boxes.id is not None:
-            track_ids = results[0].boxes.id.cpu().numpy().astype(int)
-        else:
-            track_ids = [None] * person_count
+        # Appearance features for each detection, then run our own tracker
+        features = [extract_feature(frame, b) for b in boxes]
+        tracked = self.tracker.update(list(boxes), features)
             
         # ── Adaptive fusion ──
         # Below the trigger, YOLO was ~98% accurate in testing, so we trust it.
@@ -122,7 +132,7 @@ class FrameAnalyzer:
 
         return {
             "boxes": boxes,
-            "track_ids": track_ids,
+            "tracked": tracked,
             "person_count": fused_count,
             "density": density,
             "risk_label": risk_label,

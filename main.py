@@ -17,13 +17,11 @@ from analytics import FrameAnalyzer, CameraWorker
 def draw_overlay(frame, data):
     """Draw boxes, IDs, status panel, forecast, and critical banner onto a frame."""
     # Person boxes + track IDs
-    for box, tid in zip(data["boxes"], data["track_ids"]):
+    for tid, box in data["tracked"]:
         x1, y1, x2, y2 = [int(v) for v in box]
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        if tid is not None:
-            cv2.putText(frame, f"ID {tid}", (x1, y1 - 8),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
-
+        cv2.putText(frame, f"ID {tid}", (x1, y1 - 8),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
     # Status panel background
     cv2.rectangle(frame, (0, 0), (frame.shape[1], 110), (20, 20, 20), -1)
 
